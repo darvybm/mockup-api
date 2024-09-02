@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Detalle - Mock</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico"/>
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet"/>
+    <link href="/css/styles.css" rel="stylesheet"/>
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+<body>
+<div th:replace="~{fragments/header.html :: header}">...</div>
+<div id="layoutSidenav">
+    <div th:replace="~{fragments/sidebar.html :: layoutSidevar}">...</div>
+
+    <div id="layoutSidenav_content">
+        <main>
+            <div id="banner" style="height: 10rem !important;" class="d-flex flex-column align-items-center justify-content-center">
+                <h1 class="display-5">Detalle de Mock</h1>
+
+                <div class="mt-2" style="z-index: 1">
+                    <a class="btn btn-primary" th:href="@{'/' + ${mock.hash} + '/api/' + ${mock.project.name} + '/' + ${mock.endpoint} + '?token=' + ${mock.token}}">
+                        <i class="fas fa-link me-2"></i> Acceder al enlace
+                    </a>
+                </div>
+            </div>
+
+            <div class="container-fluid px-4 mt-3">
+
+                <div class="col-12">
+                    <h5 class="fw-bold">Token</h5>
+                    <div class="card">
+                        <div class="card-body">
+                            <pre th:if="${mock.isValidateJWT()}"><span th:text="${mock.token}"></span></pre>
+                            <pre th:unless="${mock.isValidateJWT()}">JWT validation disabled for this mock.</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-3">
+                    <div class="col-12 mt-3">
+                        <h5 class="fw-bold">Nombre</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <pre th:text="*{mock.name}"></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <h5 class="fw-bold">Descripcion</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <pre th:text="*{mock.description}"></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <h5 class="fw-bold">Proyecto</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <pre th:text="*{mock.name}"></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <h5 class="fw-bold">Endpoint</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <pre th:text="*{mock.endpoint}"></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <h5 class="fw-bold">Metodo</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <pre th:text="*{mock.method}"></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <h5 class="fw-bold">Cabecera</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <pre th:text="*{mock.headers}"></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <h5 class="fw-bold">Codigo de Estado</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <pre th:text="*{mock.statusCode}"></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <h5 class="fw-bold">Tipo de Contenido</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <pre th:text="*{mock.contentType}"></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <h5 class="fw-bold">Cabecera</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <pre th:text="*{mock.body}"></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <h5 class="fw-bold">Fecha de Expiración</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <pre th:text="*{mock.expirationDate}"></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <h5 class="fw-bold">Retraso (segundos)</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <pre th:text="*{mock.delay}"></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- Footer-->
+        <div th:replace="~{fragments/footer.html :: footer}"></div>
+    </div>
+</div>
+
+<!-- Bootstrap core JS y otros scripts-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="/js/scripts.js"></script>
+<script src="/js/datatables-simple-demo.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+        crossorigin="anonymous"></script>
+<script>
+    document.addEventListener('DOMContentLoaded',function(e){
+        let field = document.querySelector('.field');
+        let input = document.querySelector('input');
+        let copyBtn = document.querySelector('.field button');
+
+        copyBtn.onclick = () =>{
+            input.select();
+            if(document.execCommand("copy")){
+                field.classList.add('active');
+                copyBtn.innerText = 'Copied';
+                setTimeout(()=>{
+                    field.classList.remove('active');
+                    copyBtn.innerText = 'Copy';
+                },3500)
+            }
+        }
+    })
+</script>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="/css/styles.css" rel="stylesheet" />
+</head>
+<body>
+    <footer class="py-4 bg-light mt-auto" th:fragment="footer">
+        <div class="container-fluid px-4">
+            <div class="d-flex align-items-center justify-content-between small">
+                <div class="text-muted">Copyright &copy; Darvy Betances & Anthony Beato - 2024</div>
+                <div>
+                    <a href="#" th:text="#{privacy_policy}">Política de privacidad</a>
+                    &middot;
+                    <a href="#" th:text="#{terms_and_conditions}">Términos y condiciones</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

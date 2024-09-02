@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Admin - List Project</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link href="/css/styles.css" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <script src="https://kit.fontawesome.com/a04f905835.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="@@path/vendor/countup.js/dist/countUp.umd.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    </head>
+    <body class="sb-nav-fixed">
+        <div th:replace="~{fragments/header.html :: header}">...</div>
+        <div id="layoutSidenav">
+            <div th:replace="~{fragments/sidebar.html :: layoutSidevar}">...</div>
+
+            <div id="layoutSidenav_content">
+                <main>
+                    <div id="banner">
+                        <h1 class="display-5">Todos los Proyectos</h1>
+                    </div>
+
+                    <div class="container-fluid px-4">
+                        <div class="row mt-3">
+                            <div class="col-md-4 col-sm-6">
+                                <div class="card mb-3 p-3 shadow">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-8 col-sm-7">
+                                            <span class="h6 text-gray">Proyectos creados</span>
+                                            <span class="counter display-6 text-secondary d-block" th:text="${projects.size()}">0</span>
+                                        </div>
+                                        <div class="col-md-4 col-sm-5 d-flex justify-content-end">
+                                            <div class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center" style="width: 4rem; height: 4rem;">
+                                                <i class="bi bi-kanban-fill" style="font-size: 2rem;"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card mt-3">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-table me-1"></i>
+                                    Lista de Proyectos
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <table id="datatablesSimple">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Descripción</th>
+                                        <th scope="col" th:if="${projects != null}">Usuario</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tr>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Descripción</th>
+                                        <th scope="col" th:if="${projects != null}">Usuario</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    <tr th:each="project: ${projects}">
+                                        <td th:text="${project.name}">Nombre</td>
+                                        <td th:text="${project.description}">Descripción</td>
+                                        <td th:if="${projects != null}" th:text="${project.user.name}">Usuario</td>
+                                        <td>
+                                            <a class="btn btn-outline-info"
+                                               th:href="@{'/projects/' + ${project.getId()}}"
+                                            >
+                                                Ver
+                                            </a>
+                                            <a class="btn btn-outline-success" th:href="@{'/projects/edit/' + ${project.getId()}}">
+                                                Editar
+                                            </a>
+                                            <a th:onclick="confirmDelete([[${project.getId()}]])" class="btn btn-outline-danger">
+                                                Eliminar
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <!-- Footer-->
+                <div th:replace="~{fragments/footer.html :: footer}"></div>
+            </div>
+        </div>
+
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="/js/scripts.js"></script>
+        <script src="/js/datatables-simple-demo.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+        <script>
+            function confirmDelete(id) {
+                Swal.fire({
+                    title: "¿Estás seguro de eliminar este Proyecto?",
+                    text: "Los datos del proyecto serán eliminados.",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonText: 'Eliminar proyecto'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        deleteProject(id);
+                    }
+                });
+            }
+
+            function deleteProject(id) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/projects/delete/' + id,
+                    contentType: 'application/json',
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Proyecto eliminado con éxito!',
+                            text: response,
+                        }).then(() => {
+                            window.location.href = "/projects";
+                        });
+                    },
+                    error: function (xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error al eliminar el proyecto',
+                            text: xhr.responseText,  // Usa la respuesta del servidor como texto del mensaje
+                        });
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>

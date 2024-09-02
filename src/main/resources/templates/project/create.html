@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Mockup API - Practica 2</title>
+    <!-- Favicon-->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <link href="/css/styles.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+</head>
+<body class="sb-nav-fixed">
+<div th:replace="~{fragments/header.html :: header}">...</div>
+<div id="layoutSidenav">
+    <div th:replace="~{fragments/sidebar.html :: layoutSidevar}">...</div>
+
+    <div id="layoutSidenav_content">
+        <main>
+            <div id="banner">
+                <h1 th:text="${edit ? 'Editar Proyecto' : 'Crear Proyecto'}" class="display-5">Crear Proyecto</h1>
+            </div>
+            <div class="container-fluid px-4 gap-3">
+                <form id="projectForm">
+                    <input type="hidden" id="projectID" th:value="${project.id}" >
+
+                    <div class="col-sm mt-3">
+                        <label for="name" class="form-label">Nombre</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-card-text"></i>
+                            </span>
+                            <input type="text" class="form-control" id="name" placeholder="Nombre de tu proyecto" required="" th:value="${edit ? project.name : ''}" >
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm mt-3">
+                        <label for="description" class="form-label">Descripción</label>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-chat-square-text"></i>
+                            </span>
+                            <input type="text" class="form-control" id="description"
+                                   placeholder="Descripción de tu proyecto" required="" th:value="${edit ? project.description : ''}">
+                        </div>
+                    </div>
+
+                    <button class="w-100 btn btn-primary btn-lg mt-5"
+                            type="button"
+                            th:text="${!edit ? 'Crear' : ''}"
+                            th:if="${!edit}"
+                            th:onclick="createProject()">
+                    </button>
+
+                    <button class="w-100 btn btn-primary btn-lg mt-5"
+                            type="button"
+                            th:text="${edit ? 'Guardar Cambios' : 'Crear'}"
+                            th:if="${edit}"
+                            th:onclick="updateProject()">
+                    </button>
+                </form>
+            </div>
+        </main>
+        <!-- Footer-->
+        <div th:replace="~{fragments/footer.html :: footer}"></div>
+    </div>
+</div>
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="/js/scripts.js"></script>
+
+<script th:inline="javascript">
+    function createProject() {
+        console.log("Creando proyecto...");
+
+        var projectData = {
+            name: $('#name').val(),
+            description: $('#description').val()
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/projects/create',
+            contentType: 'application/json',
+            data: JSON.stringify(projectData),
+            success: function (response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Proyecto creado exitosamente',
+                    showConfirmButton: true,  // Mostrar el botón de confirmación
+                    confirmButtonText: 'Ir al detalle del proyecto',  // Texto del botón de confirmación
+                }).then((result) => {
+                    // Redirigir al detalle del proyecto si el usuario hace clic en el botón de confirmación
+                    if (result.isConfirmed) {
+                        window.location.href = '/projects/' + response.id;  // Reemplaza 'response.id' con la propiedad adecuada que contiene el ID del nuevo proyecto
+                    }
+                });
+            },
+            error: function (xhr) {
+                // Muestra el mensaje de error específico proporcionado por el servidor
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error al crear el proyecto',
+                    text: xhr.responseText,  // Usa la respuesta del servidor como texto del mensaje
+                    showConfirmButton: true,  // Mostrar el botón de confirmación
+                    confirmButtonText: 'Cerrar',  // Texto del botón de confirmación
+                });
+            }
+        });
+
+    }
+
+    function updateProject() {
+        console.log("Actualizando proyecto...");
+
+        var projectData = {
+            name: $('#name').val(),
+            description: $('#description').val()
+        };
+
+        var id = $('#projectID').val()
+
+        Swal.fire({
+            title: "¿Estás seguro de actualizar este proyecto?",
+            text: "Los datos del proyecto \"" + projectData.name + "\" se actualizarán.",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonText: 'Actualizar proyecto'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'PUT',
+                    url: '/projects/edit/' + id,
+                    contentType: 'application/json',
+                    data: JSON.stringify(projectData),
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Proyecto actualizado con éxito!',
+                            text: response,
+                        }).then(() => {
+                            window.location.href = "/projects";
+                        });
+                    },
+                    error: function (xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error al actualizar el proyecto',
+                            text: xhr.responseText,
+                        });
+                    }
+                });
+            }
+        });
+
+
+    }
+</script>
+
+</body>
+</html>

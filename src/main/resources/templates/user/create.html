@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title th:text="${user != null ? 'Editar Usuario' : 'Crear Usuario'}">Crear Usuario</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link href="/css/styles.css" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    </head>
+    <body class="sb-nav-fixed">
+        <div th:replace="~{fragments/header.html :: header}">...</div>
+        <div id="layoutSidenav">
+            <div th:replace="~{fragments/sidebar.html :: layoutSidevar}">...</div>
+
+            <div id="layoutSidenav_content">
+                <main>
+                    <div id="banner">
+                        <h1 class="display-5" th:text="${edit ? 'Editar Usuario' : 'Crear Usuario'}">Crear Usuario</h1>
+                    </div>
+                    <div class="container-fluid px-4">
+                        <form id="userForm">
+                            <div class="row g-3">
+                                <label for="userId"></label>
+                                <input hidden="hidden" id="userId" th:value="${user.id}">
+
+                                <div class="col-sm-6">
+                                    <label for="name" class="form-label">Nombre</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-card-text"></i>
+                                        </span>
+                                        <input type="text" class="form-control" id="name" placeholder="Nombre completo" required="" th:value="${edit ? user.name : ''}">
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <label for="username" class="form-label">Usuario</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">@</span>
+                                        <input type="text" class="form-control" id="username" placeholder="Usuario" th:value="${edit ? user.username : ''}" th:readonly="${edit}">
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="password" class="form-label">Contraseña</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">
+                                            <i class="bi bi-key"></i>
+                                        </span>
+                                        <input type="password" class="form-control" id="password" placeholder="Ingresa la nueva Contraseña">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-5">
+                                    <label for="role" class="form-label">Rol</label>
+                                    <select class="form-select" id="role" th:value="${edit ? user.role.name() : ''}">
+                                        <option value="">Elige...</option>
+                                        <option value="ADMINISTRADOR" th:selected="${edit && user.role.name() == 'ADMINISTRADOR'}">ADMINISTRADOR</option>
+                                        <option value="USUARIO" th:selected="${edit && user.role.name() == 'USUARIO'}">USUARIO</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <button class="w-100 btn btn-primary btn-lg mt-5"
+                                    type="button"
+                                    th:text="${edit ? 'Guardar Cambios' : 'Crear'}"
+                                    th:if="${edit}"
+                                    th:onclick="updateUser()">
+                            </button>
+
+                            <button class="w-100 btn btn-primary btn-lg mt-5"
+                                    type="button"
+                                    th:text="${!edit ? 'Crear' : ''}"
+                                    th:if="${!edit}"
+                                    th:onclick="createUser()">
+                            </button>
+                        </form>
+                    </div>
+                </main>
+                <!-- Footer-->
+                <div th:replace="~{fragments/footer.html :: footer}"></div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="/js/scripts.js"></script>
+
+        <script th:inline="javascript">
+            function createUser() {
+                console.log("Creando usuario...");
+
+                var userData = {
+                    name: $('#name').val(),
+                    username: $('#username').val(),
+                    password: $('#password').val(),
+                    role: $('#role').val()
+                };
+
+                Swal.fire({
+                    title: "¿Estás seguro de crear este usuario?",
+                    text: "El usuario \"" + userData.name + "\" se creará con los datos proporcionados.",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonText: 'Crear usuario'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/manage/users/create',
+                            contentType: 'application/json',
+                            data: JSON.stringify(userData),
+                            success: function (response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '¡Usuario creado con éxito!',
+                                    text: response,
+                                }).then(() => {
+                                    // Redirigir a la página de listado de usuarios
+                                    window.location.href = "/manage/users";
+                                });
+                            },
+                            error: function (xhr) {
+                                // Muestra el mensaje de error específico proporcionado por el servidor
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error al crear el usuario',
+                                    text: xhr.responseText,  // Usa la respuesta del servidor como texto del mensaje
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+            function updateUser() {
+                console.log("Actualizando usuario...");
+
+                var userData = {
+                    name: $('#name').val(),
+                    username: $('#username').val(),
+                    password: $('#password').val(),
+                    role: $('#role').val()
+                };
+
+                Swal.fire({
+                    title: "¿Estás seguro de actualizar este usuario?",
+                    text: "Los datos del usuario \"" + userData.name + "\" se actualizarán.",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonText: 'Actualizar usuario'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: 'PUT',  // Use PUT for update
+                            url: '/manage/users/edit/' + $('#userId').val(),  // Replace 'existingUserId' with the actual user ID
+                            contentType: 'application/json',
+                            data: JSON.stringify(userData),
+                            success: function (response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '¡Usuario actualizado con éxito!',
+                                    text: response,
+                                }).then(() => {
+                                    window.location.href = "/manage/users";
+                                });
+                            },
+                            error: function (xhr) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error al actualizar el usuario',
+                                    text: xhr.responseText,  // Usa la respuesta del servidor como texto del mensaje
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>

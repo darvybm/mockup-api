@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Detalle - Proyecto</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+<<<<<<< HEAD
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link href="/css/styles.css" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="@@path/vendor/countup.js/dist/countUp.umd.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+=======
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <link href="/css/styles.css" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+>>>>>>> origin/main
+    </head>
+    <body class="sb-nav-fixed">
+        <div th:replace="~{fragments/header.html :: header}">...</div>
+        <div id="layoutSidenav">
+            <div th:replace="~{fragments/sidebar.html :: layoutSidevar}">...</div>
+
+            <div id="layoutSidenav_content">
+                <div id="banner">
+                    <h1 class="display-5">Detalle de proyecto</h1>
+                </div>
+                <main>
+                    <div class="container-fluid px-4 mt-3">
+                        <h2 class="display-5" th:text="*{project.name}">Titulo del proyecto</h2>
+                        <h3 class="lead" th:text="*{project.description}">Descripción del proyecto</h3>
+
+                        <a  class="btn btn-primary mt-3" th:href="@{/mocks/create}">Crear mock</a>
+                        <div class="card mt-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-table me-1"></i>
+                                    Tus mocks
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <table id="datatablesSimple">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Proyecto</th>
+                                        <th scope="col">Descripción</th>
+                                        <th scope="col">Endpoint</th>
+                                        <th scope="col">Método</th>
+                                        <th scope="col">Código de Estado</th>
+                                        <th scope="col">Exp. Date</th>
+                                        <th scope="col">Retraso (segundos)</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tr>
+                                        <th scope="col">Nombre</th>
+                                        <th scope="col">Proyecto</th>
+                                        <th scope="col">Descripción</th>
+                                        <th scope="col">Endpoint</th>
+                                        <th scope="col">Método</th>
+                                        <th scope="col">Código de Estado</th>
+                                        <th scope="col">Exp. Date</th>
+                                        <th scope="col">Retraso (segundos)</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    <tr th:each="mock: ${mocks}">
+                                        <td th:text="${mock.name}">Nombre</td>
+                                        <td th:text="${mock.project.name}"></td>
+                                        <td th:text="${mock.description}">Descripción</td>
+                                        <td th:text="${mock.endpoint}">Endpoint</td>
+                                        <td th:text="${mock.method}">Método</td>
+                                        <td th:text="${mock.statusCode}">Código de Estado</td>
+                                        <td th:text="${mock.expirationDate}">Exp. Date</td>
+                                        <td th:text="${mock.delay}">Retraso (segundos)</td>
+                                        <td>
+<<<<<<< HEAD
+                                            <a th:href="@{/mocks/{id}(id=${mock.id})}" class="btn btn-outline-info">
+                                                Ver
+                                            </a>
+                                            <a th:href="@{/mocks/edit/{id}(id=${mock.id})}" class="btn btn-outline-success">
+                                                Editar
+                                            </a>
+                                            <a th:onclick="confirmDelete([[${mock.getId()}]])" class="btn btn-outline-danger">
+=======
+                                            <a class="btn btn-outline-info"
+                                               th:href="@{/mocks/{id}(id=${mock.id})}"
+                                            >
+                                                Ver
+                                            </a>
+                                            <a class="btn btn-outline-success">
+                                                Editar
+                                            </a>
+                                            <a class="btn btn-outline-danger">
+>>>>>>> origin/main
+                                                Eliminar
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <!-- Footer-->
+                <div th:replace="~{fragments/footer.html :: footer}"></div>
+            </div>
+        </div>
+
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="/js/scripts.js"></script>
+<<<<<<< HEAD
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+        <script src="/js/datatables-simple-demo.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+        <script>
+            function confirmDelete(id) {
+                console.log(id);
+                console.log("confirmDelete");
+                Swal.fire({
+                    title: "¿Estás seguro de eliminar este Mock?",
+                    text: "Los datos del mock serán eliminados.",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonText: 'Eliminar mock'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        deleteMock(id);
+                    }
+                });
+            }
+
+            function deleteMock(id) {
+                console.log("deleteMock")
+                $.ajax({
+                    type: 'GET',
+                    url: '/mocks/delete/' + id,
+                    contentType: 'application/json',
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Mock eliminado con éxito!',
+                            text: response,
+                        }).then(() => {
+                            location.reload();
+                        });
+                    },
+                    error: function (xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error al eliminar el mock',
+                            text: xhr.responseText,  // Usa la respuesta del servidor como texto del mensaje
+                        });
+                    }
+                });
+            }
+        </script>
+=======
+        <script src="/js/datatables-simple-demo.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+>>>>>>> origin/main
+    </body>
+</html>

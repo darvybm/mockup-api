@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link href="/css/styles.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="layoutSidenav_nav" th:fragment="layoutSidevar">
+        <nav class="sb-sidenav accordion sb-sidenav-light" id="sidenavAccordion">
+            <div class="sb-sidenav-menu">
+                <div class="nav">
+                    <div class="sb-sidenav-menu-heading">Home</div>
+
+                    <a th:class="${activePage == 'project'} ? 'nav-link active' : 'nav-link'"
+                       th:href="@{/projects}" >
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        <span th:text="#{projects}">Proyectos</span>
+                    </a>
+
+
+                    <a th:class="${activePage == 'mock'} ? 'nav-link active' : 'nav-link'" th:href="@{/mocks}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                        Mocks
+                    </a>
+
+                    <div class="sb-sidenav-menu-heading">Admin</div>
+                    <a th:class="${activePage == 'users'} ? 'nav-link active' : 'nav-link'" th:href="@{/manage/users}" >
+                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        <span  th:text="#{users}">Usuarios</span>
+                    </a>
+
+                    <a th:class="${activePage == 'projectManage'} ? 'nav-link active' : 'nav-link'" th:href="@{/manage/projects}" >
+                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        <span  th:text="#{projects}">Proyectos</span>
+                    </a>
+
+                    <a th:class="${activePage == 'mockManage'} ? 'nav-link active' : 'nav-link'" th:href="@{/manage/mocks}" >
+                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        <span>Mocks</span>
+                    </a>
+
+                </div>
+            </div>
+        </nav>
+    </div>
+</body>
+</html>

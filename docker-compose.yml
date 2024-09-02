@@ -1,0 +1,46 @@
+version: '3.9'
+
+services:
+  mockupapi:
+    container_name: mockup-api
+    build: .
+    ports:
+      - "8081:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/test
+      - SPRING_DATASOURCE_USERNAME=test
+      - SPRING_DATASOURCE_PASSWORD=test
+    depends_on:
+      mysql:
+        condition: service_healthy
+    restart: on-failure
+    networks:
+      - mockapi-red
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=test
+      - MYSQL_USER=test
+      - MYSQL_DATABASE=test
+      - MYSQL_PASSWORD=test
+    ports:
+      - "3308:3306"  # Mapea el puerto 3308 del host al 3306 del contenedor
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - mockapi-red
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "mysql", "-u", "root", "-p$test" ]
+      timeout: 20s
+      retries: 10
+
+networks:
+  mockapi-red:
+    driver: bridge
+
+volumes:
+  db-data:
