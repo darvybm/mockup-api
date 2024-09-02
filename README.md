@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/8ed08170-3908-4f61-815c-90d1605244b0" alt="Header Image" width="500"/>
+  <img src="https://github.com/user-attachments/assets/0c59d55f-a56f-4644-93a6-c1a2fd93a4e8" alt="Header Image" width="500"/>
 </p>
 
 <p align="center">
@@ -42,27 +42,27 @@ Here are some screenshots and GIFs showcasing the application in action (The mos
 
 **Login Screen**
 <p align="left">
-  <img src="https://github.com/user-attachments/assets/d4a67c15-52b0-4da9-9ded-0c1316556332" alt="login" height="400" margin="500"/>
+  <img src="https://github.com/user-attachments/assets/5eb12bac-7757-4829-a741-2a6f7683b5de" alt="login"/>
 </p>
 
 **Project List**
 <p align="left">
-  <img src="https://github.com/user-attachments/assets/5ae7dc52-3d57-49c4-bf80-3e3e69980ca9" alt="project list" height="400"/>
+  <img src="https://github.com/user-attachments/assets/6db36450-f712-4058-a0ce-00fd001f5877" alt="project list"/>
 </p>
 
 **Project Detail**
 <p align="left">
-  <img src="https://github.com/user-attachments/assets/e5c8798c-ad92-4e4a-89e3-bfd2b61a7936" alt="project detail" height="400"/>
+  <img src="https://github.com/user-attachments/assets/a7d8b484-c3da-480e-8f96-1047df0272c5" alt="project detail"/>
 </p>
 
 **Create and Access a Mock**
 <p align="left">
-  <img src="https://github.com/user-attachments/assets/cff77eff-d086-4ce2-9e3a-a8be709cacda" alt="create mock" height="400"/>
+  <img src="https://github.com/user-attachments/assets/4435b48b-bcaf-4301-9d46-8ad1c8f2f861" alt="create mock"/>
 </p>
 
 **Users View**
 <p align="left">
-  <img src="https://github.com/user-attachments/assets/4b2bddb3-c598-45e9-9a27-b8447ae1315d" alt="users" height="400"/>
+  <img src="https://github.com/user-attachments/assets/09eea94c-246f-4652-ba30-f9b6eaf1a941" alt="users"/>
 </p>
 
 ## Tools Used
