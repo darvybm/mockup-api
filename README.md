@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/0c59d55f-a56f-4644-93a6-c1a2fd93a4e8" alt="Header Image" width="500"/>
+  <img src="https://github.com/user-attachments/assets/0c59d55f-a56f-4644-93a6-c1a2fd93a4e8" alt="Header Image" width="400"/>
 </p>
 
 <p align="center">
@@ -12,10 +12,11 @@
 </p>
 
 # MockupAPI
-Your go-to tool for simulating and managing REST API mocks efficiently.
+**MockupAPI** is a web application designed to help companies create REST API mocks for testing purposes. With this tool, users can log in, create projects (which represent APIs), and within these projects, create and manage mocks that serve as endpoints. Each endpoint is highly configurable, allowing users to attach metadata, add headers, set responses in specified formats, and define validations like JWT. Additionally, multiple HTTP methods are supported, including `POST`, `GET`, `PUT`, `DELETE`, and more.
+
+The project is built in Java using Spring Boot, with Thymeleaf for view generation in a clear MVC architecture. The views are developed with HTML, CSS, JavaScript, and Bootstrap. On the backend, Spring Security is implemented for route authentication and authorization, and two database options are supported: H2 for local testing and MySQL when deployed with Docker. The application also utilizes JWT for security and Gradle as the build system.
 
 ## Table of Contents
-- [Project Description](#project-description)
 - [Features](#features)
 - [Application](#application)
 - [Tools Used](#tools-used)
@@ -23,11 +24,6 @@ Your go-to tool for simulating and managing REST API mocks efficiently.
 - [Contributors](#contributors)
 - [License](#license)
 - [Contact Me](#contact-me)
-
-## Project Description
-**MockupAPI** is a web application designed to help companies create REST API mocks for testing purposes. With this tool, users can log in, create projects (which represent APIs), and within these projects, create and manage mocks that serve as endpoints. Each endpoint is highly configurable, allowing users to attach metadata, add headers, set responses in specified formats, and define validations like JWT. Additionally, multiple HTTP methods are supported, including `POST`, `GET`, `PUT`, `DELETE`, and more.
-
-The project is built in Java using Spring Boot, with Thymeleaf for view generation in a clear MVC architecture. The views are developed with HTML, CSS, JavaScript, and Bootstrap. On the backend, Spring Security is implemented for route authentication and authorization, and two database options are supported: H2 for local testing and MySQL when deployed with Docker. The application also utilizes JWT for security and Gradle as the build system.
 
 ## Features
 - Project and mock management.
