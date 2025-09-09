@@ -125,9 +125,9 @@
                                 </div>
                             </div>
                         </div>
-
-
-
+                        <div class="col-12 mb-3">
+                            <label for="responseDefault" class="form-label mb-3">Response Default</label>
+                            <div class="col-sm-6 mb-3" id="responseDefault">
                         <div class="col-sm-6 mb-3">
                             <label for="responseStatus" class="form-label" th:text="#{response_status}">Response status</label>
                             <select class="form-select" id="responseStatus" required="" th:value="${edit ? mock.statusCode : 0}">
@@ -201,7 +201,91 @@
                             <label for="responseBody" class="form-label" th:text="#{response_body}">Response body</label>
                             <textarea class="form-control" id="responseBody" rows="6" th:text="${edit ? mock.body : ''}"></textarea>
                         </div>
-
+                            </div>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label for="responseAdd" class="form-label mb-3" th:text="#{responses}">Responses</label>
+                            <div class="row" id="responseAdd">
+                                <div class="col-1">
+                                    <button type="button" class="btn btn-outline-primary mb-3"  onclick="addResponse()">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square" viewBox="0 0 16 16">
+                                            <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2z"></path>
+                                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"></path>
+                                        </svg>
+                                        <span th:text="#{add}">Agregar</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div th:each="response, responseIdx : ${responseList}">
+                                <div class="row">
+                                    <div class="row responses-row" id="responses">
+                                        <div class="col-sm-6 mb-3">
+                                            <label for="responseStatusCode" class="form-label" th:text="#{response_status}">Response status</label>
+                                            <select class="form-select" id="responseStatusCode" required="" placeholder="statusCode" th:value="${edit ? response.statusCode : 0}">
+                                                <option value="0" th:text="#{choose}">Elige...</option>
+                                                <option value="100" th:selected="${edit && response.statusCode == 100}">100 - Continue</option>
+                                                <option value="101" th:selected="${edit && response.statusCode == 101}">101 - Switching Protocols</option>
+                                                <option value="200" th:selected="${edit && response.statusCode == 200}">200 - OK</option>
+                                                <option value="201" th:selected="${edit && response.statusCode == 201}">201 - Created</option>
+                                                <option value="202" th:selected="${edit && response.statusCode == 202}">202 - Accepted</option>
+                                                <option value="203" th:selected="${edit && response.statusCode == 203}">203 - Non-Authoritative Information</option>
+                                                <option value="204" th:selected="${edit && response.statusCode == 204}">204 - No Content</option>
+                                                <option value="205" th:selected="${edit && response.statusCode == 205}">205 - Reset Content</option>
+                                                <option value="206" th:selected="${edit && response.statusCode == 206}">206 - Partial Content</option>
+                                                <option value="300" th:selected="${edit && response.statusCode == 300}">300 - Multiple Choices</option>
+                                                <option value="301" th:selected="${edit && response.statusCode == 301}">301 - Moved Permanently</option>
+                                                <option value="302" th:selected="${edit && response.statusCode == 302}">302 - Found</option>
+                                                <option value="303" th:selected="${edit && response.statusCode == 303}">303 - See Other</option>
+                                                <option value="304" th:selected="${edit && response.statusCode == 304}">304 - Not Modified</option>
+                                                <option value="305" th:selected="${edit && response.statusCode == 305}">305 - Use Proxy</option>
+                                                <option value="307" th:selected="${edit && response.statusCode == 307}">307 - Temporary Redirect</option>
+                                                <option value="400" th:selected="${edit && response.statusCode == 400}">400 - Bad Request</option>
+                                                <option value="401" th:selected="${edit && response.statusCode == 401}">401 - Authorization Required</option>
+                                                <option value="402" th:selected="${edit && response.statusCode == 402}">402 - Payment Required</option>
+                                                <option value="403" th:selected="${edit && response.statusCode == 403}">403 - Forbidden</option>
+                                                <option value="404" th:selected="${edit && response.statusCode == 404}">404 - Not Found</option>
+                                                <option value="405" th:selected="${edit && response.statusCode == 405}">405 - Method Not Allowed</option>
+                                                <option value="406" th:selected="${edit && response.statusCode == 406}">406 - Not Acceptable</option>
+                                                <option value="407" th:selected="${edit && response.statusCode == 407}">407 - Proxy Authentication Required</option>
+                                                <option value="408" th:selected="${edit && response.statusCode == 408}">408 - Request Timeout</option>
+                                                <option value="409" th:selected="${edit && response.statusCode == 409}">409 - Conflict</option>
+                                                <option value="410" th:selected="${edit && response.statusCode == 410}">410 - Gone</option>
+                                                <option value="411" th:selected="${edit && response.statusCode == 411}">411 - Length Required</option>
+                                                <option value="412" th:selected="${edit && response.statusCode == 412}">412 - Precondition Failed</option>
+                                                <option value="413" th:selected="${edit && response.statusCode == 413}">413 - Payload Too Large</option>
+                                                <option value="414" th:selected="${edit && response.statusCode == 414}">414 - URI Too Long</option>
+                                                <option value="415" th:selected="${edit && response.statusCode == 415}">415 - Unsupported Media Type</option>
+                                                <option value="416" th:selected="${edit && response.statusCode == 416}">416 - Range Not Satisfiable</option>
+                                                <option value="417" th:selected="${edit && response.statusCode == 417}">417 - Expectation Failed</option>
+                                                <option value="426" th:selected="${edit && response.statusCode == 426}">426 - Upgrade Required</option>
+                                                <option value="428" th:selected="${edit && response.statusCode == 428}">428 - Precondition Required</option>
+                                                <option value="429" th:selected="${edit && response.statusCode == 429}">429 - Too Many Requests</option>
+                                                <option value="431" th:selected="${edit && response.statusCode == 431}">431 - Request Header Fields Too Large</option>
+                                                <option value="451" th:selected="${edit && response.statusCode == 451}">451 - Unavailable For Legal Reasons</option>
+                                                <option value="500" th:selected="${edit && response.statusCode == 500}">500 - Internal Server Error</option>
+                                                <option value="501" th:selected="${edit && response.statusCode == 501}">501 - Not Implemented</option>
+                                                <option value="502" th:selected="${edit && response.statusCode == 502}">502 - Bad Gateway</option>
+                                                <option value="503" th:selected="${edit && response.statusCode == 503}">503 - Service Unavailable</option>
+                                                <option value="504" th:selected="${edit && response.statusCode == 504}">504 - Gateway Timeout</option>
+                                                <option value="505" th:selected="${edit && response.statusCode == 505}">505 - HTTP Version Not Supported</option>
+                                                <option value="511" th:selected="${edit && response.statusCode == 511}">511 - Network Authentication Required</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3 mb-3">
+                                            <label for="responseAnotherBody" class="form-label" th:text="#{response_body}">Response body</label>
+                                            <textarea class="form-control" id="responseAnotherBody" rows="6" placeholder="body" th:text="${edit ? response.body : ''}"></textarea>
+                                        </div>
+                                        <div class="mb-3 mb-3">
+                                            <label for="responseRule" class="form-label" th:text="#{response_rule}">Response rule to trigger</label>
+                                            <textarea class="form-control" id="responseRule" rows="6" placeholder="ruleTrigger" th:text="${edit ? response.ruleTrigger : ''}"></textarea>
+                                        </div>
+                                        <div class="col-sm-2 mb-3">
+                                            <button type="button" class="btn btn-outline-danger" onclick="removerResponse(this)">Eliminar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="col-sm-6 mb-3">
                             <label for="expirationTime" class="form-label" th:text="#{expiration_time}">Tiempo de expiración</label>
@@ -253,6 +337,74 @@
         <div th:replace="~{fragments/footer.html :: footer}"></div>
     </div>
 </div>
+<div class="row invisible" id="template_response">
+    <div class="row responses-row" id="responses_template">
+        <div class="col-sm-6 mb-3">
+            <label for="responseStatusCode_template" class="form-label" th:text="#{response_status}">Response status</label>
+            <select class="form-select" id="responseStatusCode_template" placeholder="statusCode" required="" th:value="0">
+                <option value="0" th:text="#{choose}">Elige...</option>
+                <option value="100" >100 - Continue</option>
+                <option value="101" >101 - Switching Protocols</option>
+                <option value="200" >200 - OK</option>
+                <option value="201" >201 - Created</option>
+                <option value="202" >202 - Accepted</option>
+                <option value="203" >203 - Non-Authoritative Information</option>
+                <option value="204" >204 - No Content</option>
+                <option value="205" >205 - Reset Content</option>
+                <option value="206" >206 - Partial Content</option>
+                <option value="300" >300 - Multiple Choices</option>
+                <option value="301" >301 - Moved Permanently</option>
+                <option value="302" >302 - Found</option>
+                <option value="303" >303 - See Other</option>
+                <option value="304" >304 - Not Modified</option>
+                <option value="305" >305 - Use Proxy</option>
+                <option value="307" >307 - Temporary Redirect</option>
+                <option value="400" >400 - Bad Request</option>
+                <option value="401" >401 - Authorization Required</option>
+                <option value="402" >402 - Payment Required</option>
+                <option value="403" >403 - Forbidden</option>
+                <option value="404" >404 - Not Found</option>
+                <option value="405" >405 - Method Not Allowed</option>
+                <option value="406" >406 - Not Acceptable</option>
+                <option value="407" >407 - Proxy Authentication Required</option>
+                <option value="408" >408 - Request Timeout</option>
+                <option value="409" >409 - Conflict</option>
+                <option value="410" >410 - Gone</option>
+                <option value="411" >411 - Length Required</option>
+                <option value="412" >412 - Precondition Failed</option>
+                <option value="413" >413 - Payload Too Large</option>
+                <option value="414" >414 - URI Too Long</option>
+                <option value="415" >415 - Unsupported Media Type</option>
+                <option value="416" >416 - Range Not Satisfiable</option>
+                <option value="417" >417 - Expectation Failed</option>
+                <option value="426" >426 - Upgrade Required</option>
+                <option value="428" >428 - Precondition Required</option>
+                <option value="429" >429 - Too Many Requests</option>
+                <option value="431" >431 - Request Header Fields Too Large</option>
+                <option value="451" >451 - Unavailable For Legal Reasons</option>
+                <option value="500" >500 - Internal Server Error</option>
+                <option value="501" >501 - Not Implemented</option>
+                <option value="502" >502 - Bad Gateway</option>
+                <option value="503" >503 - Service Unavailable</option>
+                <option value="504" >504 - Gateway Timeout</option>
+                <option value="505" >505 - HTTP Version Not Supported</option>
+                <option value="511" >511 - Network Authentication Required</option>
+            </select>
+        </div>
+        <div class="mb-3 mb-3">
+            <label for="responseAnotherBody_template" class="form-label" th:text="#{response_body}">Response body</label>
+            <textarea class="form-control" id="responseAnotherBody_template" placeholder="body" rows="6" ></textarea>
+        </div>
+        <div class="mb-3 mb-3">
+            <label for="responseRule_template" class="form-label" th:text="#{response_rule}">Response rule to trigger</label>
+            <textarea class="form-control" id="responseRule_template" placeholder="ruleTrigger" rows="6" ></textarea>
+        </div>
+        <div class="col-sm-2 mb-3">
+            <button type="button" class="btn btn-outline-danger" onclick="removerResponse(this)">Eliminar</button>
+        </div>
+    </div>
+</div>
+
 
 <!--jquery-->
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -333,12 +485,85 @@
         return  JSON.stringify(headers);
     }
 
+    function prepareResponses() {
+        // Obtener los datos de los headers del formulario
+        var responseRows = document.getElementsByClassName("responses-row");
+        var responses = [];
+
+        for (var i = 0; i < responseRows.length; i++) {
+            var statusCodeInput = responseRows[i].querySelector('[placeholder="statusCode"]');
+            var bodyInput = responseRows[i].querySelector('[placeholder="body"]');
+            var ruleTriggerInput = responseRows[i].querySelector('[placeholder="ruleTrigger"]');
+
+            // Obtener el valor de la clave y el valor
+            var statusCodeNew = statusCodeInput.value.trim();
+            var bodyNew = bodyInput.value.trim();
+            var ruleTriggerNew = ruleTriggerInput.value.trim();
+
+            // Agregar la clave y el valor al objeto de headers si no están vacíos
+            if (statusCodeNew !== "" && bodyNew !== "" && ruleTriggerNew !== "") {
+                const response = {
+                    ruleTrigger: ruleTriggerNew,
+                    statusCode: statusCodeNew,
+                    body: bodyNew
+                };
+                responses.push(response);
+            }
+        }
+        return  JSON.stringify(responses);
+    }
+
+</script>
+
+<script th:inline="javascript">
+
+    function changeIdElement(element){
+        if(element.hasOwnProperty('id') || element.hasAttribute('id') || (typeof element.id != 'undefined') )
+        {
+            element.id = element.id.replace("_template", "");
+        }
+
+        if(element.hasOwnProperty('for') || element.hasAttribute('for') || (typeof element.htmlFor != 'undefined') )
+        {
+            element.htmlFor = element.htmlFor.replace("_template", "");
+        }
+    }
+
+    function loopElement(element) {
+        for(const child of element.children){
+            changeIdElement(child);
+            loopElement(child);
+        }
+    }
+
+    function addResponse() {
+        var responsesDiv = document.getElementById("responseAdd");
+
+        var template = document.getElementById("template_response")
+        cloneTemplate = template.cloneNode(true);
+        cloneTemplate.id = "";
+        changeIdElement(cloneTemplate);
+        loopElement(cloneTemplate);
+        cloneTemplate.classList.remove("invisible");
+        responsesDiv.appendChild(cloneTemplate);
+    }
+
+
 </script>
 
 <script>
     function removeHeader(button) {
         // Obtener el div padre de la fila actual
         var headerRow = button.closest('.header-row');
+        // Remover el div padre (la fila completa) del DOM
+        headerRow.remove();
+    }
+</script>
+
+<script>
+    function removerResponse(button) {
+        // Obtener el div padre de la fila actual
+        var headerRow = button.closest('.responses-row');
         // Remover el div padre (la fila completa) del DOM
         headerRow.remove();
     }
@@ -361,6 +586,7 @@
             validateJWT: $('#validateJWTCheck').is(':checked'),
             delay: $('#delayResponseTime').val(),
             headers: prepareHeaders(), // Utilizar la función que prepara los encabezados
+            responses: prepareResponses(),
         };
 
         console.log(mockData);
@@ -409,6 +635,7 @@
             expirationDate: $('#expirationTime').val(),
             delay: $('#delayResponseTime').val(),
             headers: prepareHeaders(), // Utilizar la función que prepara los encabezados
+            responses: prepareResponses(),
         };
 
         console.log(mockData);

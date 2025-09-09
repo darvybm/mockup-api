@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -33,7 +34,7 @@ public class Mock {
     @Column(length = 60000)
     private String headers;
 
-    private int statusCode;
+    private Integer statusCode;
     private String contentType;
 
     @Column(length = 60000)
@@ -52,4 +53,9 @@ public class Mock {
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "mock_id")
+    private List<MockResponse> responses;
+
 }

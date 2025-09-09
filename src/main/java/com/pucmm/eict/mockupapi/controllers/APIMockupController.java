@@ -3,6 +3,7 @@ package com.pucmm.eict.mockupapi.controllers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pucmm.eict.mockupapi.models.Mock;
+import com.pucmm.eict.mockupapi.models.MockResponse;
 import com.pucmm.eict.mockupapi.services.MockService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -22,6 +23,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
 @RestController
@@ -47,7 +49,7 @@ public class APIMockupController {
             @PathVariable String endpoint,
             @RequestParam(value = "token", required = false) String token,
             HttpServletRequest request
-    ) {
+    ) throws IOException {
 
         Mock mock = mockService.getMockByHash(hash);
         if (mock == null) {
@@ -80,8 +82,35 @@ public class APIMockupController {
 
         HttpHeaders headers = createHeadersFromJson(mock.getHeaders());
         String responseBody = mock.getBody();
+        int statusCode = mock.getStatusCode();
 
-        return new ResponseEntity<>(responseBody, headers, HttpStatus.valueOf(mock.getStatusCode()));
+        if(!mock.getResponses().isEmpty()) {
+
+            if ("POST".equalsIgnoreCase(request.getMethod())) {
+                String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+                for(MockResponse response : mock.getResponses()){
+                    if(requestBody.toLowerCase().contains(response.getRuleTrigger().toLowerCase())){
+                        responseBody = response.getBody();
+                        statusCode = response.getStatusCode();
+                        break;
+                    }
+                }
+            }
+
+            if ("GET".equalsIgnoreCase(request.getMethod())) {
+                String requestQueryString = request.getQueryString();
+                for(MockResponse response : mock.getResponses()){
+                    if(requestQueryString.toLowerCase().contains(response.getRuleTrigger().toLowerCase())){
+                        responseBody = response.getBody();
+                        statusCode = response.getStatusCode();
+                        break;
+                    }
+                }
+            }
+
+        }
+
+        return new ResponseEntity<>(responseBody, headers, HttpStatus.valueOf(statusCode));
     }
 
     private boolean isMockExpired(Mock mock) {

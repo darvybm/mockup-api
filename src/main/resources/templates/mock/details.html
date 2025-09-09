@@ -124,6 +124,25 @@
                         </div>
                     </div>
 
+                    <div class="row">
+                        <table id="datatablesSimple">
+                            <thead>
+                            <tr>
+                                <th scope="col">Status Code</th>
+                                <th scope="col">Response Body</th>
+                                <th scope="col">Response *Texto de Regra* para retorno</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="response, responseIdx : ${responseList}">
+                                <td th:text="${response.statusCode}">Status Code</td>
+                                <td th:text="${response.body}">Response Body</td>
+                                <td th:text="${response.ruleTrigger}">Response *Text Rule* to Trigger</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                     <div class="col-sm-6">
                         <h5 class="fw-bold">Fecha de Expiración</h5>
                         <div class="card">

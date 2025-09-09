@@ -43,4 +43,6 @@ public class MockRequest {
 
     @NotNull(message = "No se está enviando correctamente la validación para JWT")
     private boolean validateJWT = false;
+    
+    private String responses = "";
 }

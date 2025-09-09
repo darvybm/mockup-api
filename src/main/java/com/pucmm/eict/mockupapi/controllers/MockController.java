@@ -1,8 +1,10 @@
 package com.pucmm.eict.mockupapi.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pucmm.eict.mockupapi.models.Mock;
+import com.pucmm.eict.mockupapi.models.MockResponse;
 import com.pucmm.eict.mockupapi.payload.request.MockRequest;
 import com.pucmm.eict.mockupapi.services.MockService;
 import com.pucmm.eict.mockupapi.services.ProjectService;
@@ -59,6 +61,11 @@ public class MockController {
         Mock mock = mockService.getMockById(id);
         model.addAttribute("mock", mock);
         model.addAttribute("activePage", "mock");
+        if(mock != null) {
+            model.addAttribute("responseList", mock.getResponses());
+        } else {
+            model.addAttribute("responseList", new ArrayList<MockResponse>());
+        }
         return "mock/details";
     }
 
@@ -69,6 +76,7 @@ public class MockController {
         model.addAttribute("mock", mock);
         model.addAttribute("edit", true);
         model.addAttribute("activePage", "mock");
+        model.addAttribute("responseList", mock.getResponses());
 
         List<Map.Entry<String, String>> headersList = parseHeaders(mock.getHeaders());
         model.addAttribute("headersList", headersList);
@@ -105,6 +113,7 @@ public class MockController {
             mock.setEndpoint(mockRequest.getEndpoint());
             mock.setMethod(mockRequest.getMethod().toUpperCase());
             mock.setHeaders(mockRequest.getHeaders());
+            mock.setStatusCode(mockRequest.getStatusCode());
             mock.setContentType(mockRequest.getContentType());
             mock.setBody(mockRequest.getBody());
             mock.setExpirationDate(getExpiratonDate(mockRequest));
@@ -113,6 +122,15 @@ public class MockController {
             if (mock.getProject() == null) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se pudo encontrar el proyecto correspondiente");
             }
+            
+            try
+            {
+                ObjectMapper objectMapper = new ObjectMapper();
+                List<MockResponse> responses = objectMapper.readValue(mockRequest.getResponses(), new TypeReference<List<MockResponse>>(){});
+                mock.setResponses(responses);
+            } catch(Exception e) {
+            }
+            
             mockService.createMock(mock);
             System.out.println("MOCK ACTUALIZADO EXITOSAMENTE " + mock);
             System.out.println(ResponseEntity.ok("Mock Actualizado exitosamente"));
@@ -185,19 +203,25 @@ public class MockController {
         mock.setUser(userService.getAuthenticatedUser());
         mock.setProject(projectService.getProjectById(UUID.fromString(mockRequest.getProjectId())));
 
+        try
+        {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<MockResponse> responses = objectMapper.readValue(mockRequest.getResponses(), new TypeReference<List<MockResponse>>(){});
+            mock.setResponses(responses);
+        } catch(Exception e) {
+        }
+
         return mock;
     }
 
     @GetMapping("/delete/{id}")
     public ResponseEntity<String> deleteMock(@PathVariable UUID id) {
         try {
-<<<<<<< HEAD
+
             System.out.println("ID: " + id);
             mockService.deleteMockByID(id);
             System.out.println("MOCK ELIMINADO EXITOSAMENTE");
-=======
-            mockService.deleteMockByID(id);
->>>>>>> origin/main
+
             return ResponseEntity.ok("Mock eliminado exitosamente");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al eliminar el mock: " + e.getMessage());

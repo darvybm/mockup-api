@@ -97,21 +97,10 @@
                                         <td th:text="${mock.expirationDate}">Exp. Date</td>
                                         <td th:text="${mock.delay}">Retraso (segundos)</td>
                                         <td>
-<<<<<<< HEAD
                                             <a th:href="@{/mocks/{id}(id=${mock.id})}" class="btn btn-outline-info">
                                                 Ver
                                             </a>
                                             <a th:href="@{/mocks/edit/{id}(id=${mock.id})}" class="btn btn-outline-success">
-=======
-                                            <a class="btn btn-outline-info"
-                                               th:href="@{/mocks/{id}(id=${mock.id})}"
-                                            >
-                                                Ver
-                                            </a>
-                                            <a class="btn btn-outline-success"
-                                               th:href="@{/mocks/edit/{id}(id=${mock.id})}"
-                                            >
->>>>>>> origin/main
                                                 Editar
                                             </a>
                                             <a th:onclick="confirmDelete([[${mock.getId()}]])" class="btn btn-outline-danger">
@@ -139,11 +128,10 @@
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script>
             function confirmDelete(id) {
-<<<<<<< HEAD
+
                 console.log(id);
                 console.log("confirmDelete");
-=======
->>>>>>> origin/main
+
                 Swal.fire({
                     title: "¿Estás seguro de eliminar este Mock?",
                     text: "Los datos del mock serán eliminados.",
@@ -158,10 +146,9 @@
             }
 
             function deleteMock(id) {
-<<<<<<< HEAD
+
                 console.log("deleteMock")
-=======
->>>>>>> origin/main
+
                 $.ajax({
                     type: 'GET',
                     url: '/mocks/delete/' + id,
